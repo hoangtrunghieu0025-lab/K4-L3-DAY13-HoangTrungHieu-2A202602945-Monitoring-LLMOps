@@ -40,7 +40,7 @@
 | `validate_logs.py` | 30/100 (thiếu correlation_id, enrichment) | 100/100 | 47 correlation ID khác nhau, 0 lỗi field |
 | `validate_dashboard.py` | 6/6 panel | 6/6 panel | contract vốn đã hợp lệ; dashboard runtime dựng bằng `scripts/build_dashboard.py` |
 | `pytest` | 22 passed | 25 passed | thêm test CCCD, thẻ, passport |
-| Số traces hợp lệ | 0 (tracing tắt) | 47 trace `lab-agent-run` (khớp 47 correlation ID trong log) | mỗi trace có 2 span con, tạo từ project cá nhân |
+| Số traces hợp lệ | 0 (tracing tắt) | 57 trace `lab-agent-run` (Is Root Observation = true, xem evidence 06) | mỗi trace có 2 span con, tạo từ project cá nhân |
 | Số PII leak | 0 (validator baseline) | 0 | request thử chứa email, SĐT, thẻ, CCCD đều bị che |
 | Latency P95 / TTFT P95 | ~155 ms (chưa tracing) | 1083 ms / 50 ms | P99 4315 ms do request đầu sau mỗi lần restart (tải prompt Langfuse); P50 152 ms |
 | Retrieval success rate | 100% | 100% | không có incident |
