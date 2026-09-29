@@ -10,7 +10,7 @@
 - **Repository URL:** https://github.com/hoangtrunghieu0025-lab/K4-L3-DAY13-HoangTrungHieu-2A202602945-Monitoring-LLMOps
 - **Commit SHA cuối:** `3b1ce0d` (commit chứa toàn bộ source, config, evidence CP0–CP3 và report)
 - **Challenge ID:** `day13-k4-l3a-monitoring-llmops-v1`
-- **Tên project Langfuse cá nhân:** `day13-k4-l3a-<MSSV>` 
+- **Tên project Langfuse cá nhân:** `day13-k4-l3a-2A202602945` 
 
 ## 2. Evidence index
 
@@ -93,10 +93,10 @@
 
 ## 9. Checklist trước khi nộp
 
-- [ ] Kết quả và evidence thuộc commit SHA cuối.
+- [x] Kết quả và evidence thuộc commit SHA cuối.
 - [x] Tất cả ảnh/output mở được bằng đường dẫn tương đối.
 - [x] Incident evidence nối đúng metric → log → trace.
-- [ ] Trace/prompt evidence thuộc project Langfuse cá nhân và ảnh không lộ key/secret.
-- [ ] Repository chạy lại được theo README.
+- [x] Trace/prompt evidence thuộc project Langfuse cá nhân và ảnh không lộ key/secret.
+- [x] Repository chạy lại được theo README.
 - [x] Không có secret, API key, PII thô hoặc evidence của người khác/lớp khác.
-- [ ] URL repo và commit SHA cuối đã được nộp trên LMS/Codelabs.
+- [x] URL repo và commit SHA cuối đã được nộp trên LMS/Codelabs.
