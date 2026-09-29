@@ -29,9 +29,9 @@
 | Prompt versions | `evidence/09-prompt-versions.webp` |
 | Prompt rollback | `evidence/10-prompt-rollback-production-v2.webp`, `evidence/10-prompt-rollback-production-v1.webp` |
 | Dashboard runtime | `evidence/11-dashboard-overview.webp` |
-| Incident metric | `evidence/12-incident-metric.png` |
+| Incident metric | `evidence/12-incident-metric.webp` |
 | Incident log | `evidence/13-incident-log.png` |
-| Incident trace | `evidence/14-incident-trace.png` |
+| Incident trace | `evidence/14-incident-trace.webp` |
 
 ## 3. Kết quả kỹ thuật
 
@@ -83,20 +83,20 @@
 
 ## 8. Giải thích và tự đánh giá
 
-- **Một quyết định kỹ thuật quan trọng và lý do:**
+- **Một quyết định kỹ thuật quan trọng và lý do:** Hạ ngưỡng SLO/alert latency từ 3000 ms xuống 2000 ms sau khi chạy thử `rag_slow`: incident chỉ làm latency lên ~2650 ms nên ngưỡng 3000 ms không phát hiện được. Ngưỡng 2000 ms vẫn cách xa baseline ~150–350 ms. Đây là quyết định dựa trên dữ liệu đo, không phải chọn số tùy ý.
 - **Một lỗi/blocker đã gặp:** Test `test_agent_records_prompt_version...` vỡ khi thêm span con vì client giả không có `start_as_current_observation`; và `pytest` chạy bằng Python hệ thống báo thiếu `structlog`.
 - **Cách tìm nguyên nhân và xử lý:** Đọc traceback rồi bọc span con bằng helper `_observation` (no-op khi client không hỗ trợ); chạy pytest bằng `.venv\Scripts\python.exe`.
-- **Cách hiểu luồng Metrics → Logs → Traces:**
-- **Vai trò của prompt version, token/cost, SLO hoặc rollback trong vận hành LLM:**
-- **Điều quan trọng nhất đã học:**
-- **Hạn chế hoặc phần chưa hoàn thành, nếu có:**
+- **Cách hiểu luồng Metrics → Logs → Traces:** Dashboard/metric phát hiện triệu chứng và khoảng thời gian (P95 tăng lúc 08:38Z). Lọc `data/logs.jsonl` trong khoảng đó để lấy `correlation_id` của request bất thường (`req-54254ef2`). Dùng cùng ID tìm trace trong Langfuse rồi so sánh span với request baseline để khoanh vùng nguyên nhân.
+- **Vai trò của prompt version, token/cost, SLO hoặc rollback trong vận hành LLM:** Prompt version gắn vào trace cho biết request dùng prompt nào, nên khi chất lượng/chi phí đổi có thể đối chiếu và rollback nhanh bằng cách đổi label `production` mà không cần deploy code. Token/cost cho biết prompt mới có làm tăng chi phí không. SLO và error budget biến “chậm” thành ngưỡng đo được để quyết định khi nào phải cảnh báo.
+- **Điều quan trọng nhất đã học:** Metric cho biết *có* vấn đề và từ lúc nào, log cho biết *request nào*, còn trace chỉ ra *bước nào*. Ở challenge, chỉ khi đặt ba thứ cạnh nhau (latency +2.5 s, TTFT không đổi, span `retrieve-docs` 2.50 s) mới kết luận chắc chắn là retrieval chứ không phải LLM.
+- **Hạn chế hoặc phần chưa hoàn thành, nếu có:** Dashboard là trang HTML tĩnh dựng từ log local (không real-time trong Langfuse). Panel latency theo contract dùng ngưỡng 3000 ms nên vẫn báo OK trong lúc incident (P95 2654 ms); ngưỡng 2000 ms chỉ áp dụng cho SLO/alert. Retrieval đồng bộ khiến request xếp hàng, chưa sửa trong code. Chưa có Slack webhook thật cho alert.
 
 ## 9. Checklist trước khi nộp
 
 - [ ] Kết quả và evidence thuộc commit SHA cuối.
-- [ ] Tất cả ảnh/output mở được bằng đường dẫn tương đối.
-- [ ] Incident evidence nối đúng metric → log → trace.
+- [x] Tất cả ảnh/output mở được bằng đường dẫn tương đối.
+- [x] Incident evidence nối đúng metric → log → trace.
 - [ ] Trace/prompt evidence thuộc project Langfuse cá nhân và ảnh không lộ key/secret.
 - [ ] Repository chạy lại được theo README.
-- [ ] Không có secret, API key, PII thô hoặc evidence của người khác/lớp khác.
+- [x] Không có secret, API key, PII thô hoặc evidence của người khác/lớp khác.
 - [ ] URL repo và commit SHA cuối đã được nộp trên LMS/Codelabs.
