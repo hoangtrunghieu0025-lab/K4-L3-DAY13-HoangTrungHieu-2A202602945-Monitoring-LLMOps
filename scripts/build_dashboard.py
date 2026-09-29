@@ -93,7 +93,7 @@ def main() -> None:
     series = {
         "latency": [(t, v) for t, v in by_minute(resp, "latency_ms")],
         "traffic": by_minute(req, None),
-        "errors": by_minute(fail, None),
+        "errors": [(t, sum(1 for r in fail if r["_t"].strftime("%H:%M") == t)) for t, _ in by_minute(req, None)],
         "cost": by_minute(resp, "cost_usd"),
         "tokens": by_minute(resp, "tokens_out"),
         "quality": by_minute(resp, "quality_score"),
