@@ -7,7 +7,13 @@ primary_slo:
     total_event: 'event == "request_received"'
   target_percent: 99.5
   error_budget_percent: 0.5
-  note: Học viên phải giải thích hoặc điều chỉnh ngưỡng bằng baseline của mình.
+  error_budget_minutes_28d: 201.6   # 28d * 24h * 60 * 0.5%
+  note: >-
+    Baseline của tôi (fake LLM, không có incident) có latency P95 ~0.16-0.35s, tức thấp hơn
+    ngưỡng 3000ms hơn 10 lần, nên request bình thường luôn "good". Giữ ngưỡng 3000ms vì
+    đây là mức người dùng còn chấp nhận được với chat; 99.5% là mục tiêu hợp lý cho một
+    dịch vụ nội bộ, cho phép 0.5% request (hoặc ~201.6 phút trong 28 ngày) vượt ngưỡng
+    hoặc lỗi. Burn rate > 14.4x trong 1 giờ sẽ dùng hết budget trong ~2 ngày -> page ngay.
 guardrails:
   error_rate_pct_max: 2
   daily_cost_usd_max: 2.5
