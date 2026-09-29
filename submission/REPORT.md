@@ -22,7 +22,7 @@
 | Log validator | `evidence/02-log-validator.png` |
 | Dashboard validator | `evidence/03-dashboard-validator.png` |
 | Structured log | `evidence/04-structured-log.png` |
-| PII redaction | `evidence/05-pii-redaction.png` |
+| PII redaction | `evidence/05-pii-redaction.webp` |
 | Trace list | `evidence/06-trace-list.webp` |
 | Trace waterfall | `evidence/07-trace-waterfall.webp` |
 | Trace metadata | `evidence/08-trace-metadata.webp` |
