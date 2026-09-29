@@ -8,12 +8,12 @@ Mỗi alert dựa trên triệu chứng người dùng hoặc SLO, không dựa 
 - Severity: P2
 - Duration: 5 phút
 - Kênh thông báo: Slack `#day13-alerts`
-- SLI/SLO liên quan: `fast_successful_requests` (latency <= 3000ms, mục tiêu 99.5%/28 ngày)
-- Điều kiện và thời gian duy trì: P95 `latency_ms` của `response_sent` > 3000ms liên tục 5 phút
+- SLI/SLO liên quan: `fast_successful_requests` (latency <= 2000ms, mục tiêu 99.5%/28 ngày)
+- Điều kiện và thời gian duy trì: P95 `latency_ms` của `response_sent` > 2000ms liên tục 5 phút
 - Ảnh hưởng tới người dùng: câu trả lời chậm, trải nghiệm chat kém, tiêu hao error budget
 - Ba bước kiểm tra đầu tiên:
   1. Mở panel Latency, xác nhận P95/P99 và TTFT, ghi lại khoảng thời gian bắt đầu tăng.
-  2. Lọc `data/logs.jsonl` theo `latency_ms > 3000`, lấy một `correlation_id`.
+  2. Lọc `data/logs.jsonl` theo `latency_ms > 2000`, lấy một `correlation_id`.
   3. Tìm trace có `metadata.correlation_id` đó trên Langfuse; xem span `retrieve-docs` hay `llm-generate` chiếm phần lớn thời gian.
 - Mitigation tạm thời: nếu retrieval chậm thì tắt incident/giảm tải hoặc dùng fallback không retrieval; nếu LLM chậm thì rollback prompt label `production` về version trước.
 - Owner: hoangtrunghieu

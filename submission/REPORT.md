@@ -66,9 +66,9 @@
 ## 6. Dashboard, SLO và alerts
 
 - **Dashboard và sáu panel:** `python scripts/build_dashboard.py` dựng `dashboard/dashboard.html` từ `data/logs.jsonl` theo `config/dashboard.yaml`: latency (P50/P95/P99 + TTFT), traffic, errors (+ retrieval success), cost, tokens, quality; time range 60 phút, refresh 30s, có đơn vị và threshold.
-- **SLO và lý do chọn:** 99.5% request `response_sent` có latency ≤ 3000ms (mục tiêu 99.5%/28 ngày). Baseline P95 khoảng 0.16–0.35s nên ngưỡng 3000ms còn dư địa lớn và đủ để phát hiện sự cố `rag_slow`.
+- **SLO và lý do chọn:** 99.5% request `response_sent` có latency ≤ 2000ms (mục tiêu 99.5%/28 ngày). Baseline P95 khoảng 0.16–0.35s. Ban đầu chọn 3000ms nhưng thử `rag_slow` (retrieval +2.5s) cho latency server ~2650ms, dưới ngưỡng nên không bị phát hiện; tôi hạ xuống 2000ms để bắt được sự cố này.
 - **Cách tính error budget:** (100 − 99.5)% = 0.5%; 28 ngày × 24 × 60 = 40 320 phút → 201.6 phút budget.
-- **Ba alert và runbook tương ứng:** `high_latency_p95` (P95 > 3000ms, 5m), `high_error_rate` (> 2%, 5m), `cost_budget_spike` (> 2.5 USD/giờ, 15m); chi tiết ở `docs/alerts.md`, cấu hình ở `config/alert_rules.yaml`.
+- **Ba alert và runbook tương ứng:** `high_latency_p95` (P95 > 2000ms, 5m), `high_error_rate` (> 2%, 5m), `cost_budget_spike` (> 2.5 USD/giờ, 15m); chi tiết ở `docs/alerts.md`, cấu hình ở `config/alert_rules.yaml`.
 
 ## 7. Điều tra challenge
 

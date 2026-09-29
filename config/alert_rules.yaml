@@ -1,7 +1,7 @@
 alerts:
   - name: high_latency_p95
     severity: P2
-    condition: 'p95(latency_ms) > 3000 (event == "response_sent")'
+    condition: 'p95(latency_ms) > 2000 (event == "response_sent")'
     duration: 5m
     type: symptom-based
     channel: slack
