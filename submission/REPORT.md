@@ -9,7 +9,7 @@
 - **Lớp:** K4-L3A
 - **Repository URL:** https://github.com/hoangtrunghieu0025-lab/K4-L3-DAY13-HoangTrungHieu-2A202602945-Monitoring-LLMOps
 - **Commit SHA cuối:** `7cfe6ed` (commit chứa source, config và evidence CP0–CP2; CP3 chưa làm)
-- **Challenge ID:**
+- **Challenge ID:** `day13-k4-l3a-monitoring-llmops-v1`
 - **Tên project Langfuse cá nhân:** `day13-k4-l3a-<MSSV>` 
 
 ## 2. Evidence index
@@ -72,14 +72,14 @@
 
 ## 7. Điều tra challenge
 
-- **Challenge ID:**
-- **Khoảng thời gian điều tra:**
-- **Triệu chứng từ metrics:**
-- **Log line và correlation ID liên quan:**
-- **Trace ID và span gây ảnh hưởng:**
-- **Root cause:**
-- **Fix action:**
-- **Preventive measure:**
+- **Challenge ID:** `day13-k4-l3a-monitoring-llmops-v1`
+- **Khoảng thời gian điều tra:** 2026-09-29 08:38:34Z–08:38:48Z (15:38:34–15:38:48 giờ VN). Baseline cùng 5 query lúc 08:38:29Z–08:38:31Z, chưa bật incident.
+- **Triệu chứng từ metrics:** 5/5 request của feature `monitoring` có `latency_ms` 2652–2654 ms so với baseline ~152 ms (tăng ~17 lần), vượt ngưỡng 2000 ms của challenge và SLO của tôi. `ttft_ms` vẫn 50 ms, `error` = 0%, `tool_success` = true, `tokens`/`cost` không đổi: hệ thống chậm nhưng không lỗi, và chậm trước khi LLM bắt đầu sinh.
+- **Log line và correlation ID liên quan:** `req-54254ef2` (`data/logs.jsonl`, `event: response_sent`, `feature: monitoring`, `latency_ms: 2654`, `ttft_ms: 50`, `tool_success: true`). Bốn request còn lại: `req-ba290370`, `req-0b3c310b`, `req-99b7e5e4`, `req-d677777c` cùng ~2653 ms.
+- **Trace ID và span gây ảnh hưởng:** Trace `8b69c2efead894193b0cc01f0c177b4b` (correlation `req-54254ef2`): `lab-agent-run` 2.654 s, trong đó `retrieve-docs` 2.502 s (94%) và `llm-generate` 0.152 s. Baseline `req-b1bf7174` (trace `8d1a07321c705e262cc64b109518578d`): `retrieve-docs` ~0 s, `llm-generate` 0.152 s. Cả 5 trace incident đều có `retrieve-docs` ≈ 2.50 s, `llm-generate` không đổi.
+- **Root cause:** Bước retrieval bị chậm thêm ~2.5 s (incident `rag_slow`: `time.sleep(2.5)` trong `retrieve()`), không phải LLM. Bằng chứng nhất quán: latency tăng ≈ đúng 2.5 s, TTFT không đổi, `llm-generate` giữ 0.152 s, span `retrieve-docs` chiếm 94% thời gian. Vì `retrieve()` chạy đồng bộ trong handler nên các request còn xếp hàng chờ nhau: client thấy đến ~13 s dù server đo 2.65 s.
+- **Fix action:** Tắt incident (`python scripts/inject_incident.py --disable`); latency về ~152 ms. Trong sự cố thật: kiểm tra vector store/retrieval backend, đặt timeout và fallback cho retrieval.
+- **Preventive measure:** Giữ alert `high_latency_p95` (P95 > 2000 ms trong 5 phút, runbook `docs/alerts.md#alert-1`); thêm span/metric riêng cho retrieval latency và timeout; đổi `retrieve()` sang async/threadpool để một retrieval chậm không chặn các request khác.
 
 ## 8. Giải thích và tự đánh giá
 
