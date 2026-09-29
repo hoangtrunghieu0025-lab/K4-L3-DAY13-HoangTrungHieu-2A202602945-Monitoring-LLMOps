@@ -1,6 +1,6 @@
 # Báo cáo cá nhân — K4-L3A Day 13 Monitoring & LLMOps
 
-> Mỗi học viên hoàn thiện một file duy nhất này. Khi dẫn evidence, dùng đường dẫn tương đối, ví dụ `evidence/07-trace-waterfall.png`.
+> Mỗi học viên hoàn thiện một file duy nhất này. Khi dẫn evidence, dùng đường dẫn tương đối, ví dụ `evidence/07-trace-waterfall.webp`.
 
 ## 1. Thông tin học viên
 
@@ -23,12 +23,12 @@
 | Dashboard validator | `evidence/03-dashboard-validator.png` |
 | Structured log | `evidence/04-structured-log.png` |
 | PII redaction | `evidence/05-pii-redaction.png` |
-| Trace list | `evidence/06-trace-list.png` |
-| Trace waterfall | `evidence/07-trace-waterfall.png` |
-| Trace metadata | `evidence/08-trace-metadata.png` |
-| Prompt versions | `evidence/09-prompt-versions.png` |
-| Prompt rollback | `evidence/10-prompt-rollback.png` |
-| Dashboard runtime | `evidence/11-dashboard-overview.png` |
+| Trace list | `evidence/06-trace-list.webp` |
+| Trace waterfall | `evidence/07-trace-waterfall.webp` |
+| Trace metadata | `evidence/08-trace-metadata.webp` |
+| Prompt versions | `evidence/09-prompt-versions.webp` |
+| Prompt rollback | `evidence/10-prompt-rollback-production-v2.webp`, `evidence/10-prompt-rollback-production-v1.webp` |
+| Dashboard runtime | `evidence/11-dashboard-overview.webp` |
 | Incident metric | `evidence/12-incident-metric.png` |
 | Incident log | `evidence/13-incident-log.png` |
 | Incident trace | `evidence/14-incident-trace.png` |
